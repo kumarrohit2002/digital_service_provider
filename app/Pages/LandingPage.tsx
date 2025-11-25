@@ -10,6 +10,8 @@ const App: React.FC = () => {
   // Updated state initialization to include 'phone' and use empty string defaults
   const [formData, setFormData] = useState({ name: '', email: '', phone: '', message: '' });
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     // Handling phone number input validation locally
@@ -47,33 +49,111 @@ const App: React.FC = () => {
     }
   };
 
+  const navLinks = [
+    { name: "Reel Packages", route: "#packages" },
+    { name: "Ad Services", route: "#services" },
+    { name: "Success Metrics", route: "#success" },
+    { name: "Portfolio", route: "#portfolio" },
+    { name: "Contact Us", route: "#contact" },
+  ];
+
+
   return (
     <div className="min-h-screen bg-gray-50 font-sans antialiased text-gray-800 scroll-smooth">
       
-      {/* Header/Navigation - Sticky and Responsive */}
+      {/* ================= HEADER / NAVIGATION ================= */}
       <header className="sticky top-0 z-20 bg-white shadow-md">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
+
+          {/* Logo */}
           <div className="text-2xl font-bold text-indigo-600 flex items-center">
             <Zap className="w-6 h-6 mr-2" />
             Reel-A-Thon
           </div>
-          {/* Responsive Navigation Links */}
+
+          {/* Desktop Nav */}
           <nav className="hidden md:flex space-x-8">
-            <a href="#packages" className="text-gray-600 hover:text-indigo-600 transition duration-150 text-sm font-medium">Reel Packages</a>
-            <a href="#services" className="text-gray-600 hover:text-indigo-600 transition duration-150 text-sm font-medium">Ad Services</a>
-            <a href="#success" className="text-gray-600 hover:text-indigo-600 transition duration-150 text-sm font-medium">Success Metrics</a>
-            <a href="#portfolio" className="text-gray-600 hover:text-indigo-600 transition duration-150 text-sm font-medium">Portfolio</a>
-            <a href="#contact" className="text-gray-600 hover:text-indigo-600 transition duration-150 text-sm font-medium">Contact Us</a>
+            {navLinks.map((link) => (
+              <a
+                key={link.route}
+                href={link.route}
+                className="text-gray-600 hover:text-indigo-600 font-medium"
+              >
+                {link.name}
+              </a>
+            ))}
           </nav>
-          <a href="#contact" className="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition duration-300 hidden md:block">
+
+          {/* Desktop CTA */}
+          <a
+            href="#contact"
+            className="hidden md:block bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition"
+          >
             Order Now
           </a>
-          {/* Mobile menu icon (Placeholder for full implementation) */}
-          <button className="md:hidden text-gray-600 hover:text-indigo-600 p-2 rounded-md">
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+
+          {/* Mobile Menu Icon */}
+          <button
+            className="md:hidden text-gray-600 hover:text-indigo-600 p-2 rounded-md"
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+          >
+            {isMenuOpen ? (
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            ) : (
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"
+                  d="M4 6h16M4 12h16M4 18h16" />
+              </svg>
+            )}
           </button>
         </div>
+
+        {/* Mobile Dropdown Nav */}
+        {isMenuOpen && (
+          <div className="md:hidden bg-white shadow-lg border-t border-gray-200">
+            <nav className="flex flex-col p-4 space-y-4">
+              {navLinks.map((link) => (
+                <a
+                  key={link.route}
+                  href={link.route}
+                  onClick={() => setIsMenuOpen(false)}
+                  className="text-gray-700 hover:text-indigo-600"
+                >
+                  {link.name}
+                </a>
+              ))}
+
+              <a
+                href="#contact"
+                onClick={() => setIsMenuOpen(false)}
+                className="bg-indigo-600 text-white px-4 py-2 rounded-lg text-center hover:bg-indigo-700"
+              >
+                Order Now
+              </a>
+            </nav>
+          </div>
+        )}
       </header>
+
+      {/* ================= HERO SECTION ================= */}
+      <section className="bg-white py-16 sm:py-24 border-b text-center">
+        <div className="max-w-7xl mx-auto px-4">
+          <h1 className="text-4xl sm:text-6xl lg:text-7xl font-extrabold text-gray-900 leading-tight mb-4">
+            Create Attraction. <span className="text-indigo-600">Grow Your Business</span> with Reels.
+          </h1>
+          <p className="text-lg sm:text-xl text-gray-600 mb-10 max-w-3xl mx-auto">
+            We create stunning, viral video reels that drive sales and conversions.
+          </p>
+          <a
+            href="#packages"
+            className="inline-flex items-center justify-center px-8 py-3 rounded-xl shadow-lg text-white bg-pink-600 hover:bg-pink-700 transition transform hover:scale-105"
+          >
+            Get Started - View Packages
+          </a>
+        </div>
+      </section>
 
       {/* Hero Section - Responsive Font Sizes */}
       <section className="bg-white py-16 sm:py-24 border-b border-gray-200">
