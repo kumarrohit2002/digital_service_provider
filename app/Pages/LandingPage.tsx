@@ -1,25 +1,35 @@
 "use client";
-import { useState } from 'react';
-import { Camera, Zap, DollarSign, User, Mail, Send, CheckCircle, Tag, Package, Star } from 'lucide-react';
+
+import { useState } from "react";
+import {
+  Camera,
+  Zap,
+  Send,
+  CheckCircle,
+  Tag,
+  Package,
+  Star,
+  TrendingUp,
+  Menu,
+  X,
+} from "lucide-react";
 import { toast } from "react-toastify";
-
-
 import { pricingPackages, adServices, portfolioItems } from "@/app/utils/data";
 
-// === COMPONENT START ===
-
 const App: React.FC = () => {
-  // Updated state initialization to include 'phone' and use empty string defaults
-  const [formData, setFormData] = useState({ name: '', email: '', phone: '', message: '' });
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    message: "",
+  });
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    // Handling phone number input validation locally
-    if (e.target.name === 'phone' && e.target.value.length > 10) {
-        return; // Prevent input if longer than 10 digits
-    }
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    if (e.target.name === "phone" && e.target.value.length > 10) return;
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
@@ -29,9 +39,7 @@ const App: React.FC = () => {
     try {
       const response = await fetch("/api/sendMail", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
       });
 
@@ -40,21 +48,15 @@ const App: React.FC = () => {
       if (response.ok) {
         setIsSubmitted(true);
         setFormData({ name: "", email: "", phone: "", message: "" });
-
-        console.log("Message Sent Successfully!", data);
         toast.success("Message sent successfully!");
-        
         setTimeout(() => setIsSubmitted(false), 3000);
       } else {
-        console.error("Email sending failed:", data.message);
         toast.error("Email sending failed");
       }
     } catch (error) {
       toast.error("Something went wrong");
-      console.error("Submission error:", error);
     }
   };
-
 
   const navLinks = [
     { name: "Reel Packages", route: "#packages" },
@@ -64,18 +66,17 @@ const App: React.FC = () => {
     { name: "Contact Us", route: "#contact" },
   ];
 
-
   return (
-    <div className="min-h-screen bg-gray-50 font-sans antialiased text-gray-800 scroll-smooth">
-      
-      {/* ================= HEADER / NAVIGATION ================= */}
-      <header className="sticky top-0 z-20 bg-white shadow-md">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
+    <div className="min-h-screen bg-black text-white font-sans scroll-smooth">
+
+      {/* ================= HEADER ================= */}
+      <header className="sticky top-0 z-20 bg-black/80 backdrop-blur-md border-b border-emerald-600 shadow-md">
+        <div className="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
 
           {/* Logo */}
-          <div className="text-2xl font-bold text-indigo-600 flex items-center">
-            <Zap className="w-6 h-6 mr-2" />
-            Reel-A-Thon
+          <div className="text-2xl font-bold text-emerald-500 flex items-center">
+            <Zap className="w-6 h-6 mr-2 text-emerald-400" />
+            <img src="/logoCreaton.jpg" alt="logo" className="w-28 h-auto" />
           </div>
 
           {/* Desktop Nav */}
@@ -84,7 +85,7 @@ const App: React.FC = () => {
               <a
                 key={link.route}
                 href={link.route}
-                className="text-gray-600 hover:text-indigo-600 font-medium"
+                className="text-gray-300 hover:text-emerald-400 transition font-medium"
               >
                 {link.name}
               </a>
@@ -94,48 +95,36 @@ const App: React.FC = () => {
           {/* Desktop CTA */}
           <a
             href="#contact"
-            className="hidden md:block bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition"
+            className="hidden md:block bg-pink-600 text-white px-4 py-2 rounded-lg hover:bg-pink-700 transition"
           >
             Order Now
           </a>
 
-          {/* Mobile Menu Icon */}
+          {/* Mobile Menu */}
           <button
-            className="md:hidden text-gray-600 hover:text-indigo-600 p-2 rounded-md"
+            className="md:hidden text-gray-300 hover:text-emerald-400"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
           >
-            {isMenuOpen ? (
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
-              </svg>
-            ) : (
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"
-                  d="M4 6h16M4 12h16M4 18h16" />
-              </svg>
-            )}
+            {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
           </button>
         </div>
 
-        {/* Mobile Dropdown Nav */}
         {isMenuOpen && (
-          <div className="md:hidden bg-white shadow-lg border-t border-gray-200">
+          <div className="md:hidden bg-black border-t border-emerald-600 shadow-lg">
             <nav className="flex flex-col p-4 space-y-4">
               {navLinks.map((link) => (
                 <a
                   key={link.route}
                   href={link.route}
+                  className="text-gray-300 hover:text-emerald-400"
                   onClick={() => setIsMenuOpen(false)}
-                  className="text-gray-700 hover:text-indigo-600"
                 >
                   {link.name}
                 </a>
               ))}
-
               <a
                 href="#contact"
-                onClick={() => setIsMenuOpen(false)}
-                className="bg-indigo-600 text-white px-4 py-2 rounded-lg text-center hover:bg-indigo-700"
+                className="bg-pink-600 text-white px-4 py-2 rounded-lg text-center"
               >
                 Order Now
               </a>
@@ -145,349 +134,308 @@ const App: React.FC = () => {
       </header>
 
       {/* ================= HERO SECTION ================= */}
-      <section className="bg-white py-16 sm:py-24 border-b text-center">
+      <section className="py-20 text-center border-b border-gray-800">
         <div className="max-w-7xl mx-auto px-4">
-          <h1 className="text-4xl sm:text-6xl lg:text-7xl font-extrabold text-gray-900 leading-tight mb-4">
-            Create Attraction. <span className="text-indigo-600">Grow Your Business</span> with Reels.
+          <h1 className="text-6xl font-extrabold leading-tight mb-4">
+            Create Attraction.{" "}
+            <span className="text-emerald-500">Grow Your Business</span> with Reels.
           </h1>
-          <p className="text-lg sm:text-xl text-gray-600 mb-10 max-w-3xl mx-auto">
-            We create stunning, viral video reels that drive sales and conversions.
+          <p className="text-gray-300 text-lg max-w-3xl mx-auto mb-10">
+            We help brands go viral with stunning, high-converting reel content.
           </p>
           <a
             href="#packages"
-            className="inline-flex items-center justify-center px-8 py-3 rounded-xl shadow-lg text-white bg-pink-600 hover:bg-pink-700 transition transform hover:scale-105"
+            className="inline-block bg-pink-600 px-8 py-3 rounded-xl text-white font-semibold hover:bg-pink-700 transition transform hover:scale-105"
           >
-            Get Started - View Packages
+            View Packages
           </a>
         </div>
       </section>
 
-      {/* Hero Section - Responsive Font Sizes */}
-      <section className="bg-white py-16 sm:py-24 border-b border-gray-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h1 className="text-4xl sm:text-6xl lg:text-7xl font-extrabold text-gray-900 leading-tight mb-4 animate-fadeInDown">
-            Create Attraction. <span className="text-indigo-600">Grow Your Business</span> with Reels.
-          </h1>
-          <p className="text-lg sm:text-xl text-gray-600 mb-10 max-w-3xl mx-auto animate-fadeInUp">
-            We create stunning, viral video reels for your customers. Give your products and services a powerful digital presence.
-          </p>
-          <a href="#packages" className="inline-flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-xl shadow-lg text-white bg-pink-600 hover:bg-pink-700 transition duration-300 transform hover:scale-105 animate-bounceIn">
-            Get Started - View Packages
-          </a>
-        </div>
-      </section>
-      
-      {/* Reel Showcase Section - Responsive Grid */}
-      <section id="reel-showcase" className="py-12 sm:py-16 bg-gray-100">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-10">
-                <h2 className="text-base text-pink-600 font-semibold tracking-wide uppercase">Featured Viral Content</h2>
-                <p className="mt-2 text-3xl sm:text-4xl font-extrabold text-gray-900">
-                    See Our Best Work in Action
-                </p>
-            </div>
-            
-            {/* Grid is single column on mobile, 3 columns on tablet/desktop */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-                {[
-                    { title: "Trending Product", color: "bg-red-400" },
-                    { title: "Client Success Story", color: "bg-purple-400" },
-                    { title: "Service Explanation", color: "bg-green-400" }
-                ].map((reel, index) => (
-                    <div 
-                        key={index} 
-                        className={`relative h-96 w-full rounded-2xl shadow-2xl overflow-hidden transition duration-500 transform hover:scale-[1.03] ${reel.color} cursor-pointer group`}
-                        onClick={() => console.log(`Attempted to play reel: ${reel.title}`)}
-                    >
-                        {/* Background Placeholder Image */}
-                        <img 
-                            src={`https://placehold.co/400x600/${reel.color.replace('bg-', '')}/ffffff?text=Video+${index + 1}`} 
-                            alt={`Reel ${index + 1}`} 
-                            className="absolute inset-0 w-full h-full object-cover -z-10 opacity-50 group-hover:opacity-70 transition duration-300"
-                            onError={(e) => {
-                                const target = e.target as HTMLImageElement;
-                                target.onerror = null;
-                                target.src = "https://placehold.co/400x600/cccccc/333333?text=Video";
-                              }}
-                        />
-                         {/* Mock Video Player Placeholder */}
-                        <div className="flex flex-col justify-center items-center h-full w-full bg-black bg-opacity-40 p-4 group-hover:bg-opacity-50 transition duration-300">
-                            {/* Pulsing icon for visual appeal */}
-                            <Camera className="w-10 h-10 text-white animate-pulse" />
-                            <p className="mt-4 text-white text-xl font-bold">{reel.title}</p>
-                            <p className="text-white/80 text-sm">Tap to Watch (Placeholder)</p>
-                        </div>
-                    </div>
-                ))}
-            </div>
-        </div>
-      </section>
+      {/* ================= REEL SHOWCASE ================= */}
+      <section id="reel-showcase" className="py-20 bg-black">
+        <div className="max-w-7xl mx-auto px-4">
 
-      {/* Social Proof Section - Responsive Grid */}
-      <section id="success" className="py-16 sm:py-24 bg-white border-b border-gray-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
-            <h2 className="text-base text-pink-600 font-semibold tracking-wide uppercase">Channel Worth & Impact</h2>
-            <p className="mt-2 text-3xl sm:text-4xl font-extrabold text-gray-900">
-              Real Results. Measurable Impact.
-            </p>
-          </div>
-          {/* Grid is 2 columns on mobile, 4 columns on tablet/desktop */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-8 text-center">
-            {/* Metric 1: Max Comments (Added hover animation) */}
-            <div className="bg-indigo-50 p-6 rounded-2xl shadow-lg border-b-4 border-indigo-600 transition duration-300 hover:bg-indigo-100 hover:shadow-xl">
-              <p className="text-3xl sm:text-4xl font-extrabold text-indigo-600">8.5K+</p>
-              <p className="mt-2 text-sm sm:text-lg font-medium text-gray-700">Max Comments</p>
-            </div>
-            {/* Metric 2: Max Shares (Added hover animation) */}
-            <div className="bg-indigo-50 p-6 rounded-2xl shadow-lg border-b-4 border-indigo-600 transition duration-300 hover:bg-indigo-100 hover:shadow-xl">
-              <p className="text-3xl sm:text-4xl font-extrabold text-indigo-600">12K+</p>
-              <p className="mt-2 text-sm sm:text-lg font-medium text-gray-700">Max Shares</p>
-            </div>
-            {/* Metric 3: Total Views (Added hover animation) */}
-            <div className="bg-indigo-50 p-6 rounded-2xl shadow-lg border-b-4 border-indigo-600 transition duration-300 hover:bg-indigo-100 hover:shadow-xl">
-              <p className="text-3xl sm:text-4xl font-extrabold text-indigo-600">1.5M+</p>
-              <p className="mt-2 text-sm sm:text-lg font-medium text-gray-700">Total Views</p>
-            </div>
-            {/* Metric 4: Clients Served (Added hover animation) */}
-            <div className="bg-indigo-50 p-6 rounded-2xl shadow-lg border-b-4 border-indigo-600 transition duration-300 hover:bg-indigo-100 hover:shadow-xl">
-              <p className="text-3xl sm:text-4xl font-extrabold text-indigo-600">50+</p>
-              <p className="mt-2 text-sm sm:text-lg font-medium text-gray-700">Happy Clients</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Pricing Section (Reel Packages) - Responsive Grid */}
-      <section id="packages" className="py-16 sm:py-24 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="text-base text-indigo-600 font-semibold tracking-wide uppercase">Our Best Deals</h2>
-            <p className="mt-2 text-3xl sm:text-4xl font-extrabold text-gray-900">
-              Reel Packages & Pricing
-            </p>
+            <h2 className="text-pink-500 font-semibold uppercase">Featured Viral Content</h2>
+            <p className="text-4xl font-extrabold">See Our Best Work</p>
           </div>
 
-          {/* Grid is single column on mobile, 3 columns on tablet/desktop */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {pricingPackages.map((pkg, index) => (
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
+            {[
+              { title: "Trending Product", color: "bg-emerald-600" },
+              { title: "Client Success Story", color: "bg-emerald-700" },
+              { title: "Service Explanation", color: "bg-emerald-800" },
+            ].map((reel, index) => (
               <div
                 key={index}
-                className={`bg-white p-8 rounded-3xl shadow-xl transition duration-500 ease-in-out transform hover:-translate-y-1 hover:${pkg.shadow}`}
+                className="rounded-2xl overflow-hidden shadow-lg border border-gray-700 transition hover:scale-[1.03]"
               >
-                <div className="flex items-center justify-center p-3 rounded-full w-12 h-12 mb-4 text-white" style={{ backgroundColor: pkg.color.replace('bg-', '') }}>
-                  {pkg.icon}
+                <div className={`h-3 w-full ${reel.color}`}></div>
+
+                <div className="h-80 bg-gradient-to-b from-black/40 to-black flex flex-col items-center justify-center">
+                  <Camera className="text-white w-10 h-10 mb-4 opacity-80" />
+                  <p className="text-xl font-semibold">{reel.title}</p>
+                  <p className="text-gray-400 text-sm">Tap to Watch (Preview)</p>
                 </div>
-                <h3 className="text-2xl font-bold text-gray-900 mb-2">{pkg.reels} Reels Package</h3>
-                <p className="text-gray-500 text-sm mb-4">{pkg.name}</p>
-
-                <p className="text-4xl font-extrabold text-gray-900 mb-6">
-                  ₹{pkg.price.toLocaleString('en-IN')}
-                  <span className="text-xl font-medium text-gray-500"> / Only</span>
-                </p>
-
-                <ul className="space-y-4 mb-8">
-                  {pkg.features.map((feature, i) => (
-                    <li key={i} className="flex items-start">
-                      <CheckCircle className="flex-shrink-0 w-5 h-5 text-green-500 mr-3 mt-1" />
-                      <span className="text-gray-600">{feature}</span>
-                    </li>
-                  ))}
-                </ul>
-
-                <button
-                  className={`w-full py-3 rounded-xl text-white font-semibold transition duration-300 transform hover:scale-[1.02]`}
-                  style={{ backgroundColor: pkg.color.replace('bg-', '') }}
-                  onClick={() => console.log(`Selected ${pkg.reels} Reels Package`)}
-                >
-                  Order Now
-                </button>
               </div>
             ))}
           </div>
+
         </div>
       </section>
 
-      {/* Ad Services Section - Responsive Grid */}
-      <section id="services" className="py-16 sm:py-24 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      {/* ================= AD SERVICES ================= */}
+      <section id="services" className="py-20 bg-black border-y border-gray-800">
+        <div className="max-w-7xl mx-auto px-4">
+
           <div className="text-center mb-12">
-            <h2 className="text-base text-pink-600 font-semibold tracking-wide uppercase">Advertising Solutions</h2>
-            <p className="mt-2 text-3xl sm:text-4xl font-extrabold text-gray-900">
-              Expert Videos for Product and Service Ads
-            </p>
+            <h2 className="text-pink-500 font-semibold uppercase">Advertising Solutions</h2>
+            <p className="text-4xl font-extrabold">Expert Video Services</p>
           </div>
 
-          {/* Grid is single column on mobile, 2 columns on tablet/desktop */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
             {adServices.map((service, index) => (
               <div
                 key={index}
-                className="bg-gray-50 p-8 rounded-2xl shadow-lg border border-gray-200 flex flex-col items-start transition duration-300 hover:shadow-2xl"
+                className="bg-black border border-gray-700 p-8 rounded-2xl shadow-lg hover:border-emerald-500 transition"
               >
-                <div className={`p-4 rounded-xl mb-4 ${service.color} shadow-lg`}>
+                <div
+                  className={`p-4 rounded-xl mb-4 ${service.color}`}
+                >
                   {service.icon}
                 </div>
-                <h3 className="text-2xl font-bold text-gray-900 mb-3">{service.title}</h3>
-                <p className="text-gray-600 mb-6 flex-grow">{service.description}</p>
+
+                <h3 className="text-2xl font-bold mb-3">{service.title}</h3>
+                <p className="text-gray-300 mb-6">{service.description}</p>
+
                 <button
-                  className={`mt-auto px-6 py-2 rounded-lg text-white font-medium hover:opacity-90 transition duration-300`}
-                  style={{ backgroundColor: service.color.replace('bg-', '') }}
-                  onClick={() => console.log(`Selected ${service.title} Service`)}
+                  className="px-6 py-2 rounded-lg bg-pink-600 text-white font-medium hover:bg-pink-700 transition"
+                  onClick={() => console.log(`Selected ${service.title}`)}
                 >
                   Learn More
                 </button>
               </div>
             ))}
           </div>
+
         </div>
       </section>
 
-      {/* Portfolio Section - Responsive Grid */}
-      <section id="portfolio" className="py-16 sm:py-24 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      {/* ================= METRICS ================= */}
+      <section id="success" className="py-20">
+        <div className="max-w-7xl mx-auto px-4">
+
           <div className="text-center mb-12">
-            <h2 className="text-base text-indigo-600 font-semibold tracking-wide uppercase">Our Previous Work</h2>
-            <p className="mt-2 text-3xl sm:text-4xl font-extrabold text-gray-900">
-              Showcasing Our Success Stories
-            </p>
+            <h2 className="text-pink-500 font-semibold uppercase">Channel Impact</h2>
+            <p className="text-4xl font-extrabold">Real Results</p>
           </div>
-          
-          {/* Grid is single column on mobile, 3 columns on tablet/desktop */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
+
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+            {[
+              { label: "Max Comments", value: "8.5K+" },
+              { label: "Max Shares", value: "12K+" },
+              { label: "Total Views", value: "1.5M+" },
+              { label: "Happy Clients", value: "50+" },
+            ].map((metric, i) => (
+              <div
+                key={i}
+                className="bg-black rounded-2xl border border-emerald-600 p-6 text-center hover:shadow-emerald-600/30 transition"
+              >
+                <p className="text-emerald-500 text-4xl font-extrabold">
+                  {metric.value}
+                </p>
+                <p className="text-gray-300 mt-2">{metric.label}</p>
+              </div>
+            ))}
+          </div>
+
+        </div>
+      </section>
+
+      {/* ================= PACKAGES ================= */}
+      <section id="packages" className="py-20 bg-black">
+        <div className="max-w-7xl mx-auto px-4">
+
+          <div className="text-center mb-12">
+            <h2 className="text-emerald-500 font-semibold uppercase">Our Packages</h2>
+            <p className="text-4xl font-extrabold">Reel Deals</p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
+            {pricingPackages.map((pkg, idx) => (
+              <div
+                key={idx}
+                className="bg-black border border-gray-700 rounded-3xl p-8 shadow-xl hover:border-emerald-500 transition"
+              >
+                <div
+                  className="h-14 w-14 flex items-center justify-center rounded-full mb-4"
+                  style={{ backgroundColor: pkg.color.replace("bg-", "") }}
+                >
+                  {pkg.icon}
+                </div>
+
+                <h3 className="text-2xl font-bold">{pkg.reels} Reels</h3>
+                <p className="text-gray-400 mb-4">{pkg.name}</p>
+
+                <p className="text-4xl font-extrabold mb-6">
+                  ₹{pkg.price.toLocaleString("en-IN")}
+                </p>
+
+                <ul className="space-y-3 text-gray-300 mb-6">
+                  {pkg.features.map((f: string, i: number) => (
+                    <li key={i} className="flex items-start">
+                      <CheckCircle className="text-emerald-500 w-5 h-5 mr-3" />
+                      {f}
+                    </li>
+                  ))}
+                </ul>
+
+                <button
+                  className="w-full bg-pink-600 py-3 rounded-xl font-semibold hover:bg-pink-700 transition"
+                >
+                  Order Now
+                </button>
+              </div>
+            ))}
+          </div>
+
+        </div>
+      </section>
+
+      {/* ================= PORTFOLIO ================= */}
+      <section id="portfolio" className="py-20 bg-black border-y border-gray-800">
+        <div className="max-w-7xl mx-auto px-4">
+
+          <div className="text-center mb-12">
+            <h2 className="text-emerald-500 font-semibold uppercase">Our Work</h2>
+            <p className="text-4xl font-extrabold">Success Stories</p>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-10">
             {portfolioItems.map((item, index) => (
-              <div key={index} className="bg-white rounded-2xl shadow-xl overflow-hidden group transition duration-300 hover:shadow-2xl hover:border-b-4 border-indigo-400">
-                <img 
-                  src={item.image} 
-                  alt={item.title} 
-                  className="w-full h-48 object-cover transition duration-300 group-hover:scale-105"
-                  // Fallback for image loading
+              <div
+                key={index}
+                className="bg-black border border-gray-700 rounded-2xl overflow-hidden shadow-lg hover:border-emerald-500 transition"
+              >
+                <img
+                  src={item.image}
+                  alt={item.title}
+                  className="w-full h-48 object-cover hover:scale-105 transition duration-300"
                   onError={(e) => {
                     const target = e.target as HTMLImageElement;
-                    target.onerror = null;
-                    target.src = "https://placehold.co/400x300/cccccc/333333?text=Project+Image";
+                    target.src = "https://placehold.co/400x300/333/fff?text=No+Image";
                   }}
                 />
+
                 <div className="p-6">
-                  <h3 className="text-xl font-bold text-gray-900 mb-2">{item.title}</h3>
-                  <p className="text-sm font-semibold text-indigo-600 mb-3">Client: {item.client}</p>
-                  <p className="text-gray-600 text-sm">{item.description}</p>
-                  <button className="mt-4 text-indigo-600 font-medium hover:text-indigo-800 transition duration-150 flex items-center">
-                    <Star className="w-4 h-4 mr-1"/> View Case Study
+                  <h3 className="text-xl font-bold">{item.title}</h3>
+                  <p className="text-emerald-500 font-semibold mt-1">
+                    Client: {item.client}
+                  </p>
+                  <p className="text-gray-300 text-sm mt-2">{item.description}</p>
+
+                  <button className="mt-4 text-emerald-500 hover:text-emerald-300 flex items-center">
+                    <Star className="w-4 h-4 mr-2" /> View Case Study
                   </button>
                 </div>
               </div>
             ))}
           </div>
+
         </div>
       </section>
 
-      {/* Contact Section */}
-      <section id="contact" className="py-16 sm:py-24 bg-indigo-50">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      {/* ================= CONTACT FORM ================= */}
+      <section id="contact" className="py-20 bg-black">
+        <div className="max-w-5xl mx-auto px-4">
+
           <div className="text-center mb-12">
-            <h2 className="text-base text-indigo-600 font-semibold tracking-wide uppercase">Talk to Us</h2>
-            <p className="mt-2 text-3xl sm:text-4xl font-extrabold text-gray-900">
-              Contact Us for Your Next Project
-            </p>
+            <h2 className="text-emerald-500 font-semibold uppercase">Contact Us</h2>
+            <p className="text-4xl font-extrabold">Let’s Work Together</p>
           </div>
 
-          <div className="max-w-xl mx-auto bg-white p-8 rounded-3xl shadow-2xl">
+          <div className="max-w-xl mx-auto bg-black border border-emerald-600 p-8 rounded-3xl shadow-emerald-500/20">
             {isSubmitted ? (
-              <div className="text-center p-8">
-                <CheckCircle className="w-16 h-16 text-green-500 mx-auto mb-4 animate-bounce" />
-                <h3 className="text-2xl font-bold text-gray-900">Thank You!</h3>
-                <p className="text-gray-600">We have received your message. We will contact you shortly.</p>
+              <div className="text-center py-10">
+                <CheckCircle className="w-16 h-16 text-emerald-500 mx-auto mb-4" />
+                <h3 className="text-2xl font-bold">Thank You!</h3>
+                <p className="text-gray-400 mt-2">
+                  We will contact you shortly.
+                </p>
               </div>
             ) : (
               <form onSubmit={handleSubmit} className="space-y-6">
+
                 <div>
-                  <label htmlFor="name" className="block text-sm font-medium text-gray-700">Full Name</label>
-                  <div className="mt-1">
-                    <input
-                      type="text"
-                      name="name"
-                      id="name"
-                      required
-                      value={formData.name}
-                      onChange={handleChange}
-                      className="appearance-none block w-full px-4 py-3 border border-gray-300 rounded-xl shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm transition duration-150"
-                      placeholder="Your Name"
-                    />
-                  </div>
+                  <label className="text-gray-300">Full Name</label>
+                  <input
+                    name="name"
+                    value={formData.name}
+                    onChange={handleChange}
+                    required
+                    className="w-full bg-black border border-gray-700 text-white px-4 py-3 rounded-xl focus:border-emerald-500 focus:outline-none"
+                  />
                 </div>
-                {/* Fixed Phone Number Input */}
+
                 <div>
-                  <label htmlFor="phone" className="block text-sm font-medium text-gray-700">Phone Number (10 digits)</label>
-                  <div className="mt-1">
-                    <input
-                      id="phone"
-                      name="phone"
-                      type="tel" // Use 'tel' for better mobile keyboard experience
-                      pattern="[0-9]{10}" // HTML validation for 10 digits
-                      maxLength={10}
-                      required
-                      value={formData.phone}
-                      onChange={handleChange}
-                      className="appearance-none block w-full px-4 py-3 border border-gray-300 rounded-xl shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm transition duration-150"
-                      placeholder="e.g. 9876543210"
-                    />
-                  </div>
+                  <label className="text-gray-300">Phone (10 digits)</label>
+                  <input
+                    name="phone"
+                    type="tel"
+                    pattern="[0-9]{10}"
+                    maxLength={10}
+                    value={formData.phone}
+                    onChange={handleChange}
+                    required
+                    className="w-full bg-black border border-gray-700 text-white px-4 py-3 rounded-xl focus:border-emerald-500 focus:outline-none"
+                  />
                 </div>
-                {/* Fixed Email Input */}
+
                 <div>
-                  <label htmlFor="email" className="block text-sm font-medium text-gray-700">Email Address</label>
-                  <div className="mt-1">
-                    <input
-                      id="email"
-                      name="email"
-                      type="email"
-                      required
-                      value={formData.email}
-                      onChange={handleChange}
-                      className="appearance-none block w-full px-4 py-3 border border-gray-300 rounded-xl shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm transition duration-150"
-                      placeholder="you@example.com"
-                    />
-                  </div>
+                  <label className="text-gray-300">Email</label>
+                  <input
+                    name="email"
+                    type="email"
+                    value={formData.email}
+                    onChange={handleChange}
+                    required
+                    className="w-full bg-black border border-gray-700 text-white px-4 py-3 rounded-xl focus:border-emerald-500 focus:outline-none"
+                  />
                 </div>
+
                 <div>
-                  <label htmlFor="message" className="block text-sm font-medium text-gray-700">Your Project Details</label>
-                  <div className="mt-1">
-                    <textarea
-                      id="message"
-                      name="message"
-                      rows={4}
-                      required
-                      value={formData.message}
-                      onChange={handleChange}
-                      className="appearance-none block w-full px-4 py-3 border border-gray-300 rounded-xl shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm transition duration-150"
-                      placeholder="I need information on the 7 Reels package and product advertising..."
-                    />
-                  </div>
+                  <label className="text-gray-300">Project Details</label>
+                  <textarea
+                    name="message"
+                    rows={4}
+                    value={formData.message}
+                    onChange={handleChange}
+                    required
+                    className="w-full bg-black border border-gray-700 text-white px-4 py-3 rounded-xl focus:border-emerald-500 focus:outline-none"
+                  ></textarea>
                 </div>
-                
-                <button
-                  type="submit"
-                  className="w-full flex justify-center items-center py-3 px-4 border border-transparent rounded-xl shadow-md text-base font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition duration-300 transform hover:scale-[1.01]"
-                >
+
+                <button className="w-full bg-pink-600 py-3 rounded-xl font-semibold hover:bg-pink-700 transition flex items-center justify-center">
                   <Send className="w-5 h-5 mr-2" />
                   Send Message
                 </button>
+
               </form>
             )}
           </div>
+
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="bg-gray-800 text-white py-8">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <p className="text-gray-400">
-            © {new Date().getFullYear()} Reel-A-Thon. All rights reserved. |{" "}
-            <span className="text-indigo-400">Grow Your Business Fast.</span>
-          </p>
-        </div>
+      {/* ================= FOOTER ================= */}
+      <footer className="py-8 bg-black border-t border-gray-800 text-center">
+        <p className="text-gray-500">
+          © {new Date().getFullYear()} Reel-A-Thon —{" "}
+          <span className="text-emerald-500">Grow Your Business Fast.</span>
+        </p>
       </footer>
+
     </div>
   );
 };
