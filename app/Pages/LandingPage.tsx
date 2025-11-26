@@ -1,22 +1,14 @@
 "use client";
 
 import { useState } from "react";
-import {
-  Camera,
-  Zap,
-  Send,
-  CheckCircle,
-  Tag,
-  Package,
-  Star,
-  TrendingUp,
-  Menu,
-  X,
-} from "lucide-react";
+import {Send,CheckCircle,Star} from "lucide-react";
 import { toast } from "react-toastify";
 import { pricingPackages, adServices, portfolioItems } from "@/app/utils/data";
-import Image from "next/image";
-import logo from "@/../public/logoCreaton.jpg";
+import Header from "../components/Header";
+import HeroSection from "../components/HeroSection";
+import SuccessMetrics from "../components/SuccessMetrics";
+import ReelsShowCase from "../components/ReelsShowCase";
+import Footer from "../components/Footer";
 
 const App: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -72,190 +64,26 @@ const App: React.FC = () => {
     <div className="min-h-screen bg-black text-white font-sans scroll-smooth">
 
       {/* ================= HEADER ================= */}
-      <header className="sticky top-0 z-20 bg-black/80 backdrop-blur-md border-b border-emerald-600 shadow-md">
-        <div className="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
 
-          {/* Logo */}
-          <div className="text-2xl font-bold text-emerald-500 flex items-center">
-            <Zap className="w-6 h-6 mr-2 text-emerald-400" />
-            <Image src="/logoCreaton.JPG" alt="logo" width={120} height={50} className="h-auto w-auto"/>
-          </div>
-
-          {/* Desktop Nav */}
-          <nav className="hidden md:flex space-x-8">
-            {navLinks.map((link) => (
-              <a
-                key={link.route}
-                href={link.route}
-                className="text-gray-300 hover:text-emerald-400 transition font-medium"
-              >
-                {link.name}
-              </a>
-            ))}
-          </nav>
-
-          {/* Desktop CTA */}
-          <a
-            href="#contact"
-            className="hidden md:block bg-pink-600 text-white px-4 py-2 rounded-lg hover:bg-pink-700 transition"
-          >
-            Order Now
-          </a>
-
-          {/* Mobile Menu */}
-          <button
-            className="md:hidden text-gray-300 hover:text-emerald-400"
-            onClick={() => setIsMenuOpen(!isMenuOpen)}
-          >
-            {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-          </button>
-        </div>
-
-        {isMenuOpen && (
-          <div className="md:hidden bg-black border-t border-emerald-600 shadow-lg">
-            <nav className="flex flex-col p-4 space-y-4">
-              {navLinks.map((link) => (
-                <a
-                  key={link.route}
-                  href={link.route}
-                  className="text-gray-300 hover:text-emerald-400"
-                  onClick={() => setIsMenuOpen(false)}
-                >
-                  {link.name}
-                </a>
-              ))}
-              <a
-                href="#contact"
-                className="bg-pink-600 text-white px-4 py-2 rounded-lg text-center"
-              >
-                Order Now
-              </a>
-            </nav>
-          </div>
-        )}
-      </header>
+      <Header isMenuOpen={isMenuOpen} setIsMenuOpen={setIsMenuOpen}/>
 
       {/* ================= HERO SECTION ================= */}
-      <section className="py-20 text-center border-b border-gray-800">
-        <div className="max-w-7xl mx-auto px-4">
-          <h1 className="text-6xl font-extrabold leading-tight mb-4">
-            Create Attraction.{" "}
-            <span className="text-emerald-500">Grow Your Business</span> with Reels.
-          </h1>
-          <p className="text-gray-300 text-lg max-w-3xl mx-auto mb-10">
-            We help brands go viral with stunning, high-converting reel content.
-          </p>
-          <a
-            href="#packages"
-            className="inline-block bg-pink-600 px-8 py-3 rounded-xl text-white font-semibold hover:bg-pink-700 transition transform hover:scale-105"
-          >
-            View Packages
-          </a>
-        </div>
-      </section>
+      
+      <HeroSection/>
 
       {/* ================= REEL SHOWCASE ================= */}
-      <section id="reel-showcase" className="py-20 bg-black">
-        <div className="max-w-7xl mx-auto px-4">
-
-          <div className="text-center mb-12">
-            <h2 className="text-pink-500 font-semibold uppercase">Featured Viral Content</h2>
-            <p className="text-4xl font-extrabold">See Our Best Work</p>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
-            {[
-              { title: "Trending Product", color: "bg-emerald-600" },
-              { title: "Client Success Story", color: "bg-emerald-700" },
-              { title: "Service Explanation", color: "bg-emerald-800" },
-            ].map((reel, index) => (
-              <div
-                key={index}
-                className="rounded-2xl overflow-hidden shadow-lg border border-gray-700 transition hover:scale-[1.03]"
-              >
-                <div className={`h-3 w-full ${reel.color}`}></div>
-
-                <div className="h-80 bg-gradient-to-b from-black/40 to-black flex flex-col items-center justify-center">
-                  <Camera className="text-white w-10 h-10 mb-4 opacity-80" />
-                  <p className="text-xl font-semibold">{reel.title}</p>
-                  <p className="text-gray-400 text-sm">Tap to Watch (Preview)</p>
-                </div>
-              </div>
-            ))}
-          </div>
-
-        </div>
-      </section>
+      
+      <ReelsShowCase/>
 
       {/* ================= AD SERVICES ================= */}
-      <section id="services" className="py-20 bg-black border-y border-gray-800">
-        <div className="max-w-7xl mx-auto px-4">
-
-          <div className="text-center mb-12">
-            <h2 className="text-pink-500 font-semibold uppercase">Advertising Solutions</h2>
-            <p className="text-4xl font-extrabold">Expert Video Services</p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
-            {adServices.map((service, index) => (
-              <div
-                key={index}
-                className="bg-black border border-gray-700 p-8 rounded-2xl shadow-lg hover:border-emerald-500 transition"
-              >
-                <div
-                  className={`p-4 rounded-xl mb-4 ${service.color}`}
-                >
-                  {service.icon}
-                </div>
-
-                <h3 className="text-2xl font-bold mb-3">{service.title}</h3>
-                <p className="text-gray-300 mb-6">{service.description}</p>
-
-                <button
-                  className="px-6 py-2 rounded-lg bg-pink-600 text-white font-medium hover:bg-pink-700 transition"
-                  onClick={() => console.log(`Selected ${service.title}`)}
-                >
-                  Learn More
-                </button>
-              </div>
-            ))}
-          </div>
-
-        </div>
-      </section>
+      
 
       {/* ================= METRICS ================= */}
-      <section id="success" className="py-20">
-        <div className="max-w-7xl mx-auto px-4">
-
-          <div className="text-center mb-12">
-            <h2 className="text-pink-500 font-semibold uppercase">Channel Impact</h2>
-            <p className="text-4xl font-extrabold">Real Results</p>
-          </div>
-
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-            {[
-              { label: "Max Comments", value: "8.5K+" },
-              { label: "Max Shares", value: "12K+" },
-              { label: "Total Views", value: "1.5M+" },
-              { label: "Happy Clients", value: "50+" },
-            ].map((metric, i) => (
-              <div
-                key={i}
-                className="bg-black rounded-2xl border border-emerald-600 p-6 text-center hover:shadow-emerald-600/30 transition"
-              >
-                <p className="text-emerald-500 text-4xl font-extrabold">
-                  {metric.value}
-                </p>
-                <p className="text-gray-300 mt-2">{metric.label}</p>
-              </div>
-            ))}
-          </div>
-
-        </div>
-      </section>
+      
+      <SuccessMetrics/>
 
       {/* ================= PACKAGES ================= */}
+      
       <section id="packages" className="py-20 bg-black">
         <div className="max-w-7xl mx-auto px-4">
 
@@ -431,12 +259,7 @@ const App: React.FC = () => {
       </section>
 
       {/* ================= FOOTER ================= */}
-      <footer className="py-8 bg-black border-t border-gray-800 text-center">
-        <p className="text-gray-500">
-          © {new Date().getFullYear()} Reel-A-Thon —{" "}
-          <span className="text-emerald-500">Grow Your Business Fast.</span>
-        </p>
-      </footer>
+      <Footer/>
 
     </div>
   );
