@@ -14,14 +14,21 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "Creaton - Digital Service Provider",
-  description: "Creaton is a leading digital service provider specializing in innovative solutions to elevate your online presence and drive business growth.",
+  description:
+    "Creaton is a leading digital service provider specializing in innovative solutions to elevate your online presence and drive business growth.",
+
+  icons: {
+    icon: "/logoCreaton.jpg",      // favicon / site logo
+    shortcut: "/logoCreaton.jpg",
+    apple: "/logoCreaton.jpg",
+  },
 };
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
     <html lang="en">
       <body

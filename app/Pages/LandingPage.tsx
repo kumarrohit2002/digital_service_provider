@@ -15,6 +15,7 @@ import {
 } from "lucide-react";
 import { toast } from "react-toastify";
 import { pricingPackages, adServices, portfolioItems } from "@/app/utils/data";
+import Image from "next/image";
 
 const App: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -76,7 +77,7 @@ const App: React.FC = () => {
           {/* Logo */}
           <div className="text-2xl font-bold text-emerald-500 flex items-center">
             <Zap className="w-6 h-6 mr-2 text-emerald-400" />
-            <img src="/logoCreaton.jpg" alt="logo" className="w-28 h-auto" />
+            <Image src="/logoCreaton.jpg" alt="logo" width={120} height={50} className="h-auto w-auto"/>
           </div>
 
           {/* Desktop Nav */}
