@@ -18,9 +18,9 @@ export const metadata: Metadata = {
     "Creaton is a leading digital service provider specializing in innovative solutions to elevate your online presence and drive business growth.",
 
   icons: {
-    icon: "/logoCreaton.jpg",      // favicon / site logo
-    shortcut: "/logoCreaton.jpg",
-    apple: "/logoCreaton.jpg",
+    icon: "/logoCreaton.JPG",      // favicon / site logo
+    shortcut: "/logoCreaton.JPG",
+    apple: "/logoCreaton.JPG",
   },
 };
 

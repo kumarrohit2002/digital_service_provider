@@ -16,6 +16,7 @@ import {
 import { toast } from "react-toastify";
 import { pricingPackages, adServices, portfolioItems } from "@/app/utils/data";
 import Image from "next/image";
+import logo from "@/../public/logoCreaton.jpg";
 
 const App: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -77,7 +78,7 @@ const App: React.FC = () => {
           {/* Logo */}
           <div className="text-2xl font-bold text-emerald-500 flex items-center">
             <Zap className="w-6 h-6 mr-2 text-emerald-400" />
-            <Image src="/logoCreaton.jpg" alt="logo" width={120} height={50} className="h-auto w-auto"/>
+            <Image src="/logoCreaton.JPG" alt="logo" width={120} height={50} className="h-auto w-auto"/>
           </div>
 
           {/* Desktop Nav */}
