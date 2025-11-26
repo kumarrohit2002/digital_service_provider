@@ -1,6 +1,8 @@
 "use client";
 import { useState } from 'react';
 import { Camera, Zap, DollarSign, User, Mail, Send, CheckCircle, Tag, Package, Star } from 'lucide-react';
+import { toast } from "react-toastify";
+
 
 import { pricingPackages, adServices, portfolioItems } from "@/app/utils/data";
 
@@ -24,30 +26,35 @@ const App: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    // NOTE: Removed external API call logic to adhere to single-file, self-contained rule.
-    // Simulating successful submission locally.
-    console.log("Form Data Submitted (API Simulation):", formData);
-
     try {
-        // Mock successful API response
-        const mockSuccess = true; 
+      const response = await fetch("/api/sendMail", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
 
-        if (mockSuccess) {
-            setIsSubmitted(true);
-            setFormData({ name: "", email: "", phone: "", message: "" });
-            console.log("Message Sent Successfully!");
-            
-            // Show success message briefly
-            setTimeout(() => setIsSubmitted(false), 3000);
-        } else {
-            // Replaced alert() with console log and local message
-            console.error("Failed to send email/message.");
-            // Optionally, set a local error state here
-        }
+      const data = await response.json();
+
+      if (response.ok) {
+        setIsSubmitted(true);
+        setFormData({ name: "", email: "", phone: "", message: "" });
+
+        console.log("Message Sent Successfully!", data);
+        toast.success("Message sent successfully!");
+        
+        setTimeout(() => setIsSubmitted(false), 3000);
+      } else {
+        console.error("Email sending failed:", data.message);
+        toast.error("Email sending failed");
+      }
     } catch (error) {
-        console.error("Submission error:", error);
+      toast.error("Something went wrong");
+      console.error("Submission error:", error);
     }
   };
+
 
   const navLinks = [
     { name: "Reel Packages", route: "#packages" },
